@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fitly Web Compose</string>
+    <string name="LoginButton">Iniciar Sesion</string>
+</resources>
