@@ -2,6 +2,6 @@
 <!--<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">-->
 
 <!--</PreferenceScreen>-->
-<network_security_config>
+<network-security-config>
     <base-config cleartextTrafficPermitted="true"/>
-</network_security_config>
+</network-security-config>

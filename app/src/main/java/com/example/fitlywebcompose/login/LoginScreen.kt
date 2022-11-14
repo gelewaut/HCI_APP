@@ -18,12 +18,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitlywebcompose.R
+import com.example.fitlywebcompose.data.getViewModelFactory
+import com.example.fitlywebcompose.login.mvi.LoginViewModel
 import com.example.fitlywebcompose.ui.theme.Typography
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Preview(showBackground = true, widthDp = 400, heightDp = 400)
 @Composable
 fun LoginScreen(
-    onNavigateToRoutineScreen: () -> Unit={}
+    onNavigateToRoutineScreen: () -> Unit={},
+    viewModel: LoginViewModel= viewModel(factory= getViewModelFactory())
 ) {
 
         var user by rememberSaveable{ mutableStateOf("") }
@@ -47,9 +51,6 @@ fun LoginScreen(
                         color = MaterialTheme.colors.onPrimary,
                         fontSize = 25.sp
                     )
-//                    Icon(imageVector = Icons.Default.Lock,
-//                        contentDescription = "lock"
-//                    )
                 }
             }
             Row(modifier= Modifier.padding(4.dp)) {
@@ -94,7 +95,14 @@ fun LoginScreen(
                 }
             )
             Button(
-                onClick = { onNavigateToRoutineScreen() },
+                onClick = {
+                    viewModel.doLogin(user, password)
+                    if(viewModel.uiState.isAuthenticated){
+                        onNavigateToRoutineScreen()
+                    }else{
+                        // Se tira el error en: viewModel.uiState.error
+                    }
+                          },
                 enabled = user.isNotEmpty() && password.isNotEmpty(),
                 colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary))              {
                 Text(

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.example.fitlywebcompose.data.repository.RoutineRepository
 import com.example.fitlywebcompose.data.repository.UserRepository
+import com.example.fitlywebcompose.login.mvi.LoginViewModel
 
 class ViewModelFactory constructor(
     private val sessionManager: SessionManager,
@@ -22,9 +23,8 @@ class ViewModelFactory constructor(
         handle: SavedStateHandle
     ) = with(modelClass) {
         when {
-//            TODO:Aca tienen que poner su view model
-//            isAssignableFrom(MainViewModel::class.java) ->
-//                MainViewModel(sessionManager, userRepository, routineRepository)
+            isAssignableFrom(LoginViewModel::class.java) ->
+                LoginViewModel(sessionManager, userRepository)
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
