@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.fitlywebcompose'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.fitlywebcompose"
         minSdk 26
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -27,13 +27,15 @@ android {
             // No usar localhost o la IP 127.0.0.1 porque es la interfaz de loopback
             // del emulador. La forma de salir del emulador para acceder al localhost
             // de host del mismo es usando la IP 10.0.2.2.
-            buildConfigField "String", "API_BASE_URL", "\"http://10.0.2.2:8080/api/\""
+            buildConfigField "String", "API_BASE_URL",
+                    "\"http://10.0.2.2:8080/api/\""
         }
         debug {
             // No usar localhost o la IP 127.0.0.1 porque es la interfaz de loopback
             // del emulador. La forma de salir del emulador para acceder al localhost
             // de host del mismo es usando la IP 10.0.2.2.
-            buildConfigField "String", "API_BASE_URL", "\"http://10.0.2.2:8080/api/\""
+            buildConfigField "String", "API_BASE_URL",
+                    "\"http://10.0.2.2:8080/api/\""
         }
     }
     compileOptions {
@@ -58,21 +60,20 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.activity:activity-compose:1.6.1'
+    implementation "androidx.core:core-ktx:1.9.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
+    implementation "androidx.activity:activity-compose:1.6.1"
     implementation "androidx.compose.ui:ui:$compose_ui_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
     implementation 'androidx.compose.material:material:1.3.1'
     implementation "androidx.navigation:navigation-compose:$nav_version"
     implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
-
     implementation "com.google.accompanist:accompanist-swiperefresh:0.27.0"
     implementation 'com.google.code.gson:gson:2.10'
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
-
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'

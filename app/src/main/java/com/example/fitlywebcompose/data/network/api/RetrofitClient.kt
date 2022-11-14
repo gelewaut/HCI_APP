@@ -11,8 +11,6 @@ import java.util.*
 
 object RetrofitClient {
 
-    private const val API_BASE_URL = "http://10.0.2.2:8080/api/"
-
     @Volatile
     private var instance: Retrofit? = null
 
@@ -35,9 +33,17 @@ object RetrofitClient {
             .create()
 
         return Retrofit.Builder()
-            .baseUrl(API_BASE_URL)
+            .baseUrl(BuildConfig.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()
+    }
+
+    fun getApiUserService(context: Context) : ApiUserService {
+        return getInstance(context).create(ApiUserService::class.java)
+    }
+
+    fun getApiRoutineService(context: Context) : ApiRoutineService {
+        return getInstance(context).create(ApiRoutineService::class.java)
     }
 }
