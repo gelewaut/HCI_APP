@@ -1,4 +1,9 @@
 <resources>
-    <string name="app_name">Fitly Web Compose</string>
+    <string name="app_name">Fitly</string>
     <string name="LoginButton">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="insert_username">Insert your username here</string>
+    <string name="insert_password">Insert your password here</string>
+    <string name="sign_in">Sign In</string>
 </resources>

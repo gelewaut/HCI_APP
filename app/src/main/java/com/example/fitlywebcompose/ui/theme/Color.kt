@@ -2,7 +2,7 @@ package com.example.fitlywebcompose.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val MDPrimary = Color(0xFF6200EE)
+val MDPrimary = Color(0xFF0C1D8A)
 val MDPVariant = Color(0xFF3700B3)
 val MDSecondary = Color(0xFF03DAC6)
 val MDSVariant = Color(0xFF018786)

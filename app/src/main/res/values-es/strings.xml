@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Fitly Web Compose</string>
-    <string name="LoginButton">Iniciar Sesion</string>
+    <string name="app_name">Fitly</string>
+    <string name="LoginButton">Iniciar Sesión</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="insert_username">Inserte su nombre de usuario aquí</string>
+    <string name="insert_password">Inserte su contraseña aquí</string>
+    <string name="sign_in">Inicie sesión</string>
+
 </resources>
