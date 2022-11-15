@@ -6,14 +6,17 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,7 +26,7 @@ import com.example.fitlywebcompose.login.mvi.LoginViewModel
 import com.example.fitlywebcompose.ui.theme.Typography
 import androidx.lifecycle.viewmodel.compose.viewModel
 
-@Preview(showBackground = true, widthDp = 400, heightDp = 400)
+@Preview
 @Composable
 fun LoginScreen(
     onNavigateToRoutineScreen: () -> Unit={},
@@ -33,6 +36,8 @@ fun LoginScreen(
         var user by rememberSaveable{ mutableStateOf("") }
         var password by rememberSaveable{ mutableStateOf("") }
         var passwordVisible by rememberSaveable { mutableStateOf(false) }
+        var isError = false
+
         Column (
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -42,6 +47,7 @@ fun LoginScreen(
             Box(
                 modifier = Modifier
                     .background(MaterialTheme.colors.primary)
+                    .padding(4.dp)
                     .width(300.dp),
                 contentAlignment = Alignment.Center
             ){
@@ -53,20 +59,27 @@ fun LoginScreen(
                     )
                 }
             }
-            Row(modifier= Modifier.padding(4.dp)) {
-                Text(text = stringResource(R.string.sign_in))
-                Icon(imageVector = Icons.Default.Login, contentDescription = "accountBox")
-            }
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = "accountCircle",
+                modifier= Modifier.size(50.dp)
+                )
+                Text(
+                    text = stringResource(R.string.sign_in),
+                    fontSize = 20.sp
+                    )
+
             
             OutlinedTextField(
                 value = user,
                 onValueChange = {user = it},
                 modifier = Modifier
                     .background(MaterialTheme.colors.surface)
+                    .padding(4.dp)
                     .width(300.dp),
                 label = { Text(text = stringResource(R.string.username)) },
-                placeholder = { Text(text = stringResource(R.string.insert_username))},
-                leadingIcon = { Icon(imageVector = Icons.Default.AccountCircle, contentDescription = "accountCircle") },
+//                placeholder = { Text(text = stringResource(R.string.insert_username))},
+                leadingIcon = { Icon(imageVector = Icons.Default.AccountBox, contentDescription = "accountBox") },
                 singleLine = true,
             )
             OutlinedTextField(
@@ -74,9 +87,10 @@ fun LoginScreen(
                 onValueChange = {password = it},
                 modifier = Modifier
                     .background(MaterialTheme.colors.surface)
+                    .padding(4.dp)
                     .width(300.dp),
                 label = { Text(text =  stringResource(R.string.password))},
-                placeholder = { Text(text = stringResource(R.string.insert_password) )},
+//                placeholder = { Text(text = stringResource(R.string.insert_password) )},
                 leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "lock") },
                 singleLine = true,
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
@@ -94,22 +108,45 @@ fun LoginScreen(
                     }
                 }
             )
-            Button(
-                onClick = {
-                    viewModel.doLogin(user, password)
-                    if(viewModel.uiState.isAuthenticated){
-                        onNavigateToRoutineScreen()
-                    }else{
-                        // Se tira el error en: viewModel.uiState.error
+            
+
+                            
+                Button(
+                    onClick = {
+                        viewModel.doLogin(user, password)
+                        if(viewModel.uiState.error == null){
+                            onNavigateToRoutineScreen()
+                        }else{
+                            isError = true
+                        }
+                    },
+                    enabled = user.isNotEmpty() && password.isNotEmpty(),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)) {
+                    Text(
+                        text = stringResource(R.string.LoginButton),
+                        fontSize = Typography.body1.fontSize,
+                        color = MaterialTheme.colors.onPrimary
+                    )
+
+                }
+
+
+            if (isError){
+                Snackbar(
+                    backgroundColor = MaterialTheme.colors.error,
+                    modifier = Modifier.width(300.dp)
+                ) {
+                    Text(
+                        text = viewModel.uiState.error.toString(),
+                        color = MaterialTheme.colors.onError
+                    )
+                    Button(onClick = {
+                        isError = false
+                    }){
+                        Icon(imageVector = Icons.Rounded.Close , contentDescription = "close")
                     }
-                          },
-                enabled = user.isNotEmpty() && password.isNotEmpty(),
-                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary))              {
-                Text(
-                    text = stringResource(R.string.LoginButton),
-                    fontSize = Typography.body1.fontSize,
-                    color = MaterialTheme.colors.onPrimary
-                )
+                }
             }
+
         }
     }
