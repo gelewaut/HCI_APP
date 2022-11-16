@@ -114,7 +114,7 @@ fun LoginScreen(
                 Button(
                     onClick = {
                         viewModel.doLogin(user, password)
-                        if(viewModel.uiState.error == null){
+                        if(viewModel.uiState.isAuthenticated){
                             onNavigateToRoutineScreen()
                         }else{
                             isError = true

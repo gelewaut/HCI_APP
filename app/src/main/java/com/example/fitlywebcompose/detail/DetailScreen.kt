@@ -1,9 +1,11 @@
 package com.example.fitlywebcompose.detail
 
+import com.example.fitlywebcompose.ui.theme.Shapes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
+import androidx.compose.material.ContentAlpha.medium
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -12,63 +14,103 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.fitlywebcompose.data.getViewModelFactory
+import com.example.fitlywebcompose.detail.mvi.DetailViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.fitlywebcompose.R
-import com.example.fitlywebcompose.ui.theme.Typography
+
 
 @Composable
 fun DetailScreen(
     id:Int,
-    onNavigateToExecuteScreen: (id:Int) -> Unit ={}) {
+    onNavigateToRoutineScreen: () -> Unit = {},
+    onNavigateToExecuteScreen: (id:Int) -> Unit ={},
+    viewModel: DetailViewModel = viewModel(
+        factory = getViewModelFactory())
+    ) {
+
+        var uiState = viewModel.uiState
+        if (uiState.routine == null){
+            viewModel.getRoutine(id)
+        }
+
         Column(
             verticalArrangement = Arrangement.Top
-        ){
+        ) {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { onNavigateToRoutineScreen() },
                 modifier = Modifier
                     .padding(4.dp)
-                ) {
-                Icon(imageVector= Icons.Default.ArrowBack,
-                    contentDescription ="arrowBack",
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "arrowBack",
                     tint = MaterialTheme.colors.onPrimary
                 )
-                Text(text = "Back")
+                Text(text = stringResource(R.string.arrow_back)) 
             }
 
-            Row (
+            Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colors.primaryVariant)
-                    ){
+            ) {
                 Text(
-                    text = "Routine $id",
+                    text = uiState.routine?.name.toString(),
                     fontSize = 25.sp,
                     fontWeight = FontWeight(500),
                     color = MaterialTheme.colors.onPrimary
-                    )
+                )
             }
             Text(
-                text = "Here you can see the cycles, exercises and reps of this routine, you can press de arrow on the specific cycle to see more info.",
+                text = stringResource(R.string.detail_description),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(6.dp)
-                )
+            )
+
+            Card(
+                shape= Shapes.medium,
+                backgroundColor = MaterialTheme.colors.primaryVariant,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Column {
+                Row{
+                    Text(text = stringResource(R.string.routine_detail), color = MaterialTheme.colors.onPrimary)
+                    Text(text = uiState.routine?.detail.toString(),color = MaterialTheme.colors.onPrimary)
+                }
+                Row{
+                    Text(text = stringResource(R.string.score),color = MaterialTheme.colors.onPrimary)
+                    Text(text = uiState.routine?.score.toString(),color = MaterialTheme.colors.onPrimary)
+                }
+                Row{
+                    Text(text = stringResource(R.string.difficulty),color = MaterialTheme.colors.onPrimary)
+                    Text(text = uiState.routine?.difficulty.toString(),color = MaterialTheme.colors.onPrimary)
+                }
+                }
+            }
+
+
+
+            LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+            ) {
+                uiState.routine?.cycles?.forEach{ cycle->
+                    item {
+                        ExpandableCard(cycle)
+                    }
+                }
+            }
         }
 
-    LazyColumn(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
-    ){
-        items(3){
-            ExpandableCard("Cycle1", "Exercisessssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
-        }
+
     }
-}
 
 

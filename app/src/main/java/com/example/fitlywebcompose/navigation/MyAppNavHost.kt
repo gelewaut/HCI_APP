@@ -46,6 +46,7 @@ fun MyAppNavHost (
         ) {
             DetailScreen(
                 it.arguments!!.getInt("id"),
+                onNavigateToRoutineScreen = {navController.navigate("routines")},
                 onNavigateToExecuteScreen = {id -> navController.navigate("routines/$id/execute")}
             )
         }

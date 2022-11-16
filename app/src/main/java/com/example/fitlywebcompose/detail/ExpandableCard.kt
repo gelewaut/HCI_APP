@@ -24,14 +24,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.rotationMatrix
+import com.example.fitlywebcompose.data.model.Cycle
 import com.example.fitlywebcompose.ui.theme.Shapes
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ExpandableCard(
-    title: String,
-    description: String
+    cycle: Cycle
 ){
     var expandedState by remember{ mutableStateOf(false)}
     val rotationState by animateFloatAsState(
@@ -65,7 +65,7 @@ fun ExpandableCard(
                Text(
                    modifier = Modifier
                        .weight(6f),
-                   text = title,
+                   text = cycle.name,
                    fontSize = 20.sp,
                    fontWeight = FontWeight.Bold,
                    color = MaterialTheme.colors.onPrimary
@@ -84,11 +84,11 @@ fun ExpandableCard(
                 }
             }
             if(expandedState){
-                Text(
-                    text = description,
-                    color = MaterialTheme.colors.onPrimary
+                cycle.exercises.forEach{
+                    cycleExercise ->
+                    Text(text = "${cycleExercise.exercise.name} | ${cycleExercise.duration} |${cycleExercise.repetitions}")
+                }
 
-                )
             }
         }
     }

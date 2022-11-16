@@ -19,12 +19,9 @@ import com.example.fitlywebcompose.ui.theme.Typography
 import androidx.compose.material.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import coil.annotation.ExperimentalCoilApi
 
 
 @Preview(showBackground = true)
@@ -79,7 +76,6 @@ fun RoutineListItem() {
     }
 }
 
-@ExperimentalCoilApi
 @Preview(showBackground = true)
 @Composable
 fun RoutineList() {
