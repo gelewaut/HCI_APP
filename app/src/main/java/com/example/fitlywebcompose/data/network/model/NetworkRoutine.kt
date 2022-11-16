@@ -10,12 +10,12 @@ class NetworkRoutine(
     @SerializedName("id"         ) var id         : Int,
     @SerializedName("name"       ) var name       : String,
     @SerializedName("detail"     ) var detail     : String,
-    @SerializedName("date"       ) var date       : Int,
+    @SerializedName("date"       ) var date       : Date,
     @SerializedName("score"      ) var score      : Int,
-    @SerializedName("isPublic"   ) var isPublic   : Boolean? = null,
+    @SerializedName("isPublic"   ) var isPublic   : Boolean,
     @SerializedName("difficulty" ) var difficulty : String,
     @SerializedName("metadata"   ) var metadata   : String?  = null,
-    @SerializedName("user"       ) var user       : User?    = null
+    @SerializedName("user"       ) var networkRoutineUser: NetworkRoutineUser,
 
 ) {
     fun asModel() : Routine {
@@ -26,7 +26,7 @@ class NetworkRoutine(
             date = date,
             score = score,
             difficulty = difficulty,
-            cycles = listOf()
+            cycles = emptyList()
         )
     }
 }
@@ -50,7 +50,7 @@ class NetworkCycle (
             type = type,
             order = order,
             repetitions = repetitions,
-            exercises = listOf()
+            exercises = emptyList()
         )
     }
 }
@@ -60,7 +60,7 @@ class NetworkCycleExercise (
     @SerializedName("order"       ) var order       : Int,
     @SerializedName("duration"    ) var duration    : Int,
     @SerializedName("repetitions" ) var repetitions : Int,
-    @SerializedName("exercise"    ) var exercise    : Exercise = NetworkExercise().asModel()
+    @SerializedName("exercise"    ) var networkExercise: NetworkExercise,
 
 ) {
     fun asModel() : CycleExercise {
@@ -68,18 +68,18 @@ class NetworkCycleExercise (
             order = order,
             duration = duration,
             repetitions = repetitions,
-            exercise = exercise
+            exercise = networkExercise.asModel()
         )
     }
 }
 
 class NetworkExercise (
 
-    @SerializedName("id"       ) var id       : Int?    = null,
-    @SerializedName("name"     ) var name     : String? = null,
-    @SerializedName("detail"   ) var detail   : String? = null,
-    @SerializedName("type"     ) var type     : String? = null,
-    @SerializedName("date"     ) var date     : Int?    = null,
+    @SerializedName("id"       ) var id       : Int,
+    @SerializedName("name"     ) var name     : String,
+    @SerializedName("detail"   ) var detail   : String,
+    @SerializedName("type"     ) var type     : String,
+    @SerializedName("date"     ) var date     : Date,
     @SerializedName("metadata" ) var metadata : String? = null
 
 ) {
