@@ -7,5 +7,9 @@
     <string name="insert_username">Inserte su nombre de usuario aquí</string>
     <string name="insert_password">Inserte su contraseña aquí</string>
     <string name="sign_in">Inicie sesión</string>
-
+    <string name="arrow_back">Atrás</string>
+    <string name="detail_description">Aqui encontraras mas informacion sobre esta rutina, para ver los ejercicios, repeticions o duracion de un ciclo presione el boton de flecha.</string>
+    <string name="score"> Puntuación:</string>
+    <string name="difficulty"> Dificultad: </string>
+    <string name="routine_detail">Detalle: </string>
 </resources>

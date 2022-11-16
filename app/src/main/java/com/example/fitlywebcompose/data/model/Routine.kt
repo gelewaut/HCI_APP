@@ -6,7 +6,7 @@ data class Routine(
     val id: Int,
     val name: String,
     val detail: String,
-    val date: Int,
+    val date: Date,
     val score: Int,
 //    val isPublic: Boolean,
     val difficulty: String,

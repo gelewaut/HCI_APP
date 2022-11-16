@@ -6,4 +6,9 @@
     <string name="insert_username">Insert your username here</string>
     <string name="insert_password">Insert your password here</string>
     <string name="sign_in">Sign In</string>
+    <string name="arrow_back">Back</string>
+    <string name="detail_description">Here you can find more info about this routine, to see the exercises, reps and duration of the cycles press the arrow button.</string>
+    <string name="score"> Score: </string>
+    <string name="difficulty"> Difficulty: </string>
+    <string name="routine_detail">Detail: </string>
 </resources>
