@@ -10,6 +10,7 @@ data class Routine(
     val score: Int,
 //    val isPublic: Boolean,
     val difficulty: String,
+    var isFavourite: Boolean = false,
     var cycles: List<Cycle>
 )
 

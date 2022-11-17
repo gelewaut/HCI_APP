@@ -17,7 +17,12 @@ class RoutineRepository(
     suspend fun getRoutines(refresh: Boolean = false) : List<Routine> {
         if (refresh || routines.isEmpty()) {
             val result = remoteDataSource.getRoutines()
+            val favourites = remoteDataSource.getFavourites().content.map { it.asModel() }
             val toRet = result.content.map {it.asModel()}
+            favourites.forEach { favourite ->
+                var index = toRet.find { it -> it.id == favourite.id }
+                index?.isFavourite = true
+            }
 //            toRet.forEach { routine -> routine.cycles = getCycles(routine.id) }
             //Thread-safe write
             routineMutex.withLock {
@@ -30,8 +35,9 @@ class RoutineRepository(
     }
 
     suspend fun getRoutine(routineId: Int) : Routine? {
-        var result = remoteDataSource.getRoutine(routineId).asModel()
-        result.cycles = getCycles(routineId)
+//        var result = remoteDataSource.getRoutine(routineId).asModel()
+        var result = routines.find {routine -> routine.id == routineId }
+        result?.cycles = getCycles(routineId)
         return result
 //        return this.routines.find { routine -> routine.id == routineId }
     }
@@ -46,5 +52,20 @@ class RoutineRepository(
     private suspend fun getCycleExercises(cycleId: Int) : List<CycleExercise> {
         val result = remoteDataSource.getCycleExercises(cycleId)
         return result.content.map { it.asModel() }
+    }
+
+    suspend fun addFavourite(routineId: Int) {
+        remoteDataSource.addFavourite(routineId)
+        getRoutines(true)
+    }
+
+    suspend fun removeFavourite(routineId: Int) {
+        remoteDataSource.removeFavourite(routineId)
+        getRoutines(true)
+    }
+
+    suspend fun addScore(routineId: Int, score:Int, review: String) {
+        remoteDataSource.addScore(routineId, score, review)
+        getRoutines(true)
     }
 }

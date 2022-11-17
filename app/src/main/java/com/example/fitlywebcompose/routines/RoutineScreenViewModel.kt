@@ -41,4 +41,70 @@ class RoutineScreenViewModel(
             Log.v(null, "not ok")
         }
     }
+
+    fun addFavourite(routineId: Int) = viewModelScope.launch {
+        uiState = uiState.copy(
+            isFetching = true,
+            message = null
+        )
+        runCatching {
+            routineRepository.addFavourite(routineId)
+        }.onSuccess {
+            getRoutines()
+            uiState = uiState.copy(
+                isFetching = false,
+            )
+            Log.v(null, "Ok Favourite")
+        }.onFailure { e ->
+            uiState = uiState.copy(
+                message = e.message,
+                isFetching = false
+            )
+            Log.v(null, "not ok Favourite")
+        }
+    }
+
+    fun removeFavourite(routineId: Int) = viewModelScope.launch {
+        uiState = uiState.copy(
+            isFetching = true,
+            message = null
+        )
+        runCatching {
+            routineRepository.removeFavourite(routineId)
+        }.onSuccess {
+            getRoutines()
+            uiState = uiState.copy(
+                isFetching = false,
+            )
+            Log.v(null, "Ok RemoveFavourite")
+        }.onFailure { e ->
+            uiState = uiState.copy(
+                message = e.message,
+                isFetching = false
+            )
+            Log.v(null, "not ok RemoveFavourite")
+        }
+    }
+
+    fun addScore(routineId: Int, score:Int, review: String) = viewModelScope.launch {
+        uiState = uiState.copy(
+            isFetching = true,
+            message = null
+        )
+        runCatching {
+            routineRepository.addScore(routineId, score, review)
+        }.onSuccess {
+            getRoutines()
+            uiState = uiState.copy(
+                isFetching = false,
+            )
+            Log.v(null, "Ok Score")
+        }.onFailure { e ->
+            uiState = uiState.copy(
+                message = e.message,
+                isFetching = false
+            )
+            Log.v(null, "Not Ok Score ${e.message}")
+        }
+    }
 }

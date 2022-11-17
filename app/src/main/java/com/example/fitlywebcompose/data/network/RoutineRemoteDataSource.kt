@@ -45,4 +45,28 @@ class RoutineRemoteDataSource(
             apiRoutineService.getCycleExercise(cycleId, exerciseId)
         }
     }
+
+    suspend fun getFavourites() : NetworkPagedContent<NetworkRoutine> {
+        return handleApiResponse {
+            apiRoutineService.getFavourites()
+        }
+    }
+
+    suspend fun addFavourite(routineId: Int) {
+        return handleApiResponse {
+            apiRoutineService.addFavourite(routineId)
+        }
+    }
+
+    suspend fun removeFavourite(routineId: Int) {
+        return handleApiResponse {
+            apiRoutineService.removeFavourite(routineId)
+        }
+    }
+
+    suspend fun addScore(routineId: Int, score: Int, review: String) {
+        return handleApiResponse {
+            apiRoutineService.addScore(routineId, score, review)
+        }
+    }
 }
