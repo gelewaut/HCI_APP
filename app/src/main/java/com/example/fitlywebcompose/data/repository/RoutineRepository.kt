@@ -17,10 +17,12 @@ class RoutineRepository(
     suspend fun getRoutines(refresh: Boolean = false) : List<Routine> {
         if (refresh || routines.isEmpty()) {
             val result = remoteDataSource.getRoutines()
+            val toRet = result.content.map {it.asModel()}
+//            toRet.forEach { routine -> routine.cycles = getCycles(routine.id) }
             //Thread-safe write
             routineMutex.withLock {
-                this.routines = result.content.map { it.asModel() }
-                this.routines.forEach { routine -> routine.cycles = getCycles(routine.id) }
+                this.routines = toRet
+//                this.routines.forEach { routine -> routine.cycles = getCycles(routine.id) }
             }
         }
 

@@ -32,6 +32,7 @@ class RoutineScreenViewModel(
                 isFetching = false,
                 routines = response
             )
+            Log.v(null, "Ok")
         }.onFailure { e ->
             uiState = uiState.copy(
                 message = e.message,

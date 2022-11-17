@@ -96,3 +96,64 @@ fun ExecuteScreen(id:Int, onNavigateToDetailScreen: (id:Int) -> Unit ) {
         }
     }
 }
+
+/*
+
+import android.os.CountDownTimer
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
+
+@Composable
+fun ExecuteScreen(id:Int, onNavigateToDetailScreen: (id:Int) -> Unit) {
+    var count by remember { mutableStateOf(10) }
+    var time = Timer(count = count, onCountChange = {count = it})
+    Surface() {
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Text (text = "$count")
+            Button(onClick = { time }) {
+                Text(text = "Start")
+            }
+            Text(text = "Executing Routine $id")
+            Button(onClick = { onNavigateToDetailScreen(id) }) {
+                Text(
+                    text = "Go Back",
+                    fontSize = Typography.body1.fontSize,
+                    color = MaterialTheme.colors.primary
+                )
+            }
+        }
+    }
+}
+@Composable
+fun Timer (count:Int, onCountChange: (Int) -> Unit) {
+    val time = object : CountDownTimer((count * 1000).toLong(), 1000) {
+        override fun onTick(p0: Long) {
+            onCountChange ((p0/1000).toInt())
+        }
+
+        override fun onFinish() {
+            onCountChange (10)
+            this.cancel()
+        }
+
+    }.start()
+}
+
+
+
+@Preview (showBackground = true)
+@Composable
+fun ShowScreen() {
+    ExecuteScreen(id = 1, onNavigateToDetailScreen = {})
+}
+*/

@@ -9,6 +9,7 @@ import com.example.fitlywebcompose.data.repository.RoutineRepository
 import com.example.fitlywebcompose.data.repository.UserRepository
 import com.example.fitlywebcompose.detail.mvi.DetailViewModel
 import com.example.fitlywebcompose.login.mvi.LoginViewModel
+import com.example.fitlywebcompose.routines.RoutineScreenViewModel
 
 class ViewModelFactory constructor(
     private val sessionManager: SessionManager,
@@ -28,6 +29,8 @@ class ViewModelFactory constructor(
                 LoginViewModel(sessionManager, userRepository)
             isAssignableFrom(DetailViewModel::class.java)->
                 DetailViewModel(sessionManager, routineRepository)
+            isAssignableFrom(RoutineScreenViewModel::class.java) ->
+                RoutineScreenViewModel(sessionManager, userRepository, routineRepository)
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
