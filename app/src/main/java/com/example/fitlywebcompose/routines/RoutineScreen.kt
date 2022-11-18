@@ -6,6 +6,8 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -160,6 +162,7 @@ fun RoutineScreen(
                 Button(onClick = {
                     showFilters = !showFilters
                 }) {
+                    Icon(imageVector = Icons.Default.Search, contentDescription = "search")
                     Text(text = stringResource(R.string.filters))
                     Icon(
                         imageVector = Icons.Default.ArrowDropDownCircle,
@@ -219,7 +222,9 @@ fun RoutineScreen(
                     }
                 }
             }
-            LazyColumn() {
+            LazyVerticalGrid(
+                columns=  GridCells.Adaptive(300.dp),
+                content = {
                 viewModel.uiState.showRoutines?.forEach {
                     item {
                         RoutineListItem(
@@ -231,6 +236,7 @@ fun RoutineScreen(
                     }
                 }
             }
+            )
         }
     }
 

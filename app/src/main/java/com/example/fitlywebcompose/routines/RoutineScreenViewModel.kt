@@ -95,7 +95,7 @@ class RoutineScreenViewModel(
 
     fun getRoutinesByScore(){
         uiState = uiState.copy(
-            showRoutines = uiState.routines!!.sortedBy { routine -> routine.score }
+            showRoutines = uiState.routines!!.sortedByDescending { routine -> routine.score }
         )
     }
 
