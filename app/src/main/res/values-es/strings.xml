@@ -26,4 +26,14 @@
     <string name="expert"> Dificultad Experto</string>
     <string name="none"> Ninguno </string>
     <string name="filters"> Filtrar por </string>
+    <string name="time_left"> Tiempo Restante del Ejercicio:</string>
+    <string name="routine_name"> Rutina:</string>
+    <string name="routine_difficulty"> Dificultad: </string>
+    <string name="routine_score"> Puntuacion: </string>
+    <string name="routine_cycle"> Ciclo: </string>
+    <string name="type"> Tipo: </string>
+    <string name="exercise"> Ejercicio: </string>
+    <string name="executing"> EJECUTANDO: </string>
+    <string name="change_view"> Cambiar Vista </string>
+
 </resources>

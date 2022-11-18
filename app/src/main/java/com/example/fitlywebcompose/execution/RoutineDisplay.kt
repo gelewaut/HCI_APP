@@ -15,6 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.res.stringResource
+import com.example.fitlywebcompose.R
 import com.example.fitlywebcompose.data.model.Cycle
 import com.example.fitlywebcompose.data.model.CycleExercise
 import com.example.fitlywebcompose.data.model.Routine
@@ -28,13 +30,13 @@ fun RoutineDisplay(routine: Routine, cycle: Cycle, ex: CycleExercise, time: Int)
         Column(
             modifier = Modifier
                 .align(Alignment.TopCenter)
-                .padding(top = 100.dp),
+                .padding(top = 25.dp),
             verticalArrangement = Arrangement.spacedBy(40.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            textCard(Text = "EJECUTANDO: ${routine.name}")
+            textCard(Text = stringResource(R.string.executing) + routine.name)
             Text(
-                text = "TIEMPO RESTANTE DE EJERCICIO",
+                text = stringResource(R.string.time_left),
                 textAlign = TextAlign.Center,
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold

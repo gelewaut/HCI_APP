@@ -25,4 +25,15 @@
     <string name="expert"> Expert Difficulty </string>
     <string name="none"> None </string>
     <string name="filters"> Filter by </string>
+    <string name="time_left"> Exercise Time Left:</string>
+    <string name="routine_name"> Routine:</string>
+    <string name="routine_difficulty"> Difficulty: </string>
+    <string name="routine_score"> Score: </string>
+    <string name="routine_cycle"> Cycle: </string>
+    <string name="type"> Type: </string>
+    <string name="exercise"> Exercise: </string>
+    <string name="executing"> EXECUTING: </string>
+    <string name="change_view"> Change View </string>
+
+
 </resources>

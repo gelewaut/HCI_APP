@@ -19,6 +19,7 @@ data class ExecuteUiState (
     val timer: Int = 0,
     val cycle: Cycle? = null,
     val cycleExercise: CycleExercise? = null,
+    val repetitions_left: Int = 0,
     val finished: Boolean = false,
 
     val showDetails: Boolean = false,

@@ -33,6 +33,7 @@ class ExecuteViewModel(
                 currentRoutine = response
             )
             Log.v(null, "Ok")
+            prepareTimer()
         }.onFailure { e ->
             uiState = uiState.copy(
                 message = e.message,
@@ -42,7 +43,7 @@ class ExecuteViewModel(
         }
     }
 
-    fun prepareTimer () = viewModelScope.launch {
+    private fun prepareTimer () = viewModelScope.launch {
         uiState = uiState.copy(
             message = null
         )
@@ -82,6 +83,7 @@ class ExecuteViewModel(
                     exerciseIterator = exe.exercises.iterator(),
                     cycle = exe
                 )
+                Log.v(null,"AntiCorte")
 //                uiState.exerciseIterator = exe.exercises.iterator()
 //                uiState.ok = true
             } else {
@@ -91,6 +93,7 @@ class ExecuteViewModel(
             uiState = uiState.copy(
                 ok = false
             )
+            Log.v(null,"Iterator 4")
         }
     }
 
@@ -101,23 +104,36 @@ class ExecuteViewModel(
     }
 
     fun execute () = viewModelScope.launch {
-        if (uiState.ok && uiState.exerciseIterator!!.hasNext()) {
+        if (uiState.repetitions_left > 0) {
             uiState = uiState.copy(
-                cycleExercise = uiState.exerciseIterator!!.next()
+                repetitions_left = uiState.repetitions_left-1
             )
+            return@launch
+        }
+
+        if (uiState.ok && uiState.exerciseIterator!!.hasNext()) {
+            val exe = uiState.exerciseIterator!!.next()
+            uiState = uiState.copy(
+                cycleExercise = exe,
+                repetitions_left = exe.repetitions+1
+            )
+            Log.v(null,"Iterator 1")
             return@launch
         } else {
             uiState = uiState.copy(
                 ok = false
             )
         }
-        while (!uiState.ok && uiState.cycleIterator!!.hasNext()) {
+        while (uiState.ok && uiState.cycleIterator!!.hasNext()) {
+            Log.v(null,"Iterator 3")
             getExerciseIterator()
         }
         if(uiState.ok && uiState.exerciseIterator!!.hasNext()) {
             uiState = uiState.copy(
-                cycleExercise = uiState.exerciseIterator!!.next()
+                cycleExercise = uiState.exerciseIterator!!.next(),
+                repetitions_left = uiState.cycleExercise!!.repetitions+1
             )
+            Log.v(null,"Iterator 2")
             return@launch
         }
 
@@ -126,7 +142,7 @@ class ExecuteViewModel(
             cycleExercise = null,
             message = "Finished"
         )
-        return@launch
+        Log.v(null,"Corte ${uiState.ok}")
 
         /*
         uiState = uiState.copy(
