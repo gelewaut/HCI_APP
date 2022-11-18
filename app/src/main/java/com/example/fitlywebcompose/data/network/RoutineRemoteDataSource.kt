@@ -1,10 +1,7 @@
 package com.example.fitlywebcompose.data.network
 
 import com.example.fitlywebcompose.data.network.api.ApiRoutineService
-import com.example.fitlywebcompose.data.network.model.NetworkCycle
-import com.example.fitlywebcompose.data.network.model.NetworkCycleExercise
-import com.example.fitlywebcompose.data.network.model.NetworkPagedContent
-import com.example.fitlywebcompose.data.network.model.NetworkRoutine
+import com.example.fitlywebcompose.data.network.model.*
 
 class RoutineRemoteDataSource(
     private val apiRoutineService: ApiRoutineService
@@ -64,9 +61,9 @@ class RoutineRemoteDataSource(
         }
     }
 
-    suspend fun addScore(routineId: Int, score: Int, review: String) {
+    suspend fun addScore(routineId: Int, reviewContent: NetworkReviewContent) {
         return handleApiResponse {
-            apiRoutineService.addScore(routineId, score, review)
+            apiRoutineService.addScore(routineId, reviewContent)
         }
     }
 }

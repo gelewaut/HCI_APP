@@ -87,28 +87,6 @@ class RoutineScreenViewModel(
         }
     }
 
-    fun addScore(routineId: Int, score:Int, review: String) = viewModelScope.launch {
-        uiState = uiState.copy(
-            isFetching = true,
-            message = null
-        )
-        runCatching {
-            routineRepository.addScore(routineId, score, review)
-        }.onSuccess {
-            getRoutines()
-            uiState = uiState.copy(
-                isFetching = false,
-            )
-            Log.v(null, "Ok Score")
-        }.onFailure { e ->
-            uiState = uiState.copy(
-                message = e.message,
-                isFetching = false
-            )
-            Log.v(null, "Not Ok Score ${e.message}")
-        }
-    }
-
         fun getFavoriteRoutines(){
             uiState = uiState.copy(
                 showRoutines = uiState.routines!!.filter { routine-> routine.isFavourite }

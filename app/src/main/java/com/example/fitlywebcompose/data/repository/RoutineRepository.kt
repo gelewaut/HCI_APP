@@ -2,6 +2,7 @@ package com.example.fitlywebcompose.data.repository
 
 import com.example.fitlywebcompose.data.model.*
 import com.example.fitlywebcompose.data.network.RoutineRemoteDataSource
+import com.example.fitlywebcompose.data.network.model.NetworkReviewContent
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -65,7 +66,6 @@ class RoutineRepository(
     }
 
     suspend fun addScore(routineId: Int, score:Int, review: String) {
-        remoteDataSource.addScore(routineId, score, review)
-        getRoutines(true)
+        remoteDataSource.addScore(routineId, NetworkReviewContent(score = score, review = review) )
     }
 }

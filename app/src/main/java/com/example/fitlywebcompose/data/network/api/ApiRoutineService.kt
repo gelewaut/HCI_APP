@@ -1,9 +1,6 @@
 package com.example.fitlywebcompose.data.network.api
 
-import com.example.fitlywebcompose.data.network.model.NetworkCycle
-import com.example.fitlywebcompose.data.network.model.NetworkCycleExercise
-import com.example.fitlywebcompose.data.network.model.NetworkPagedContent
-import com.example.fitlywebcompose.data.network.model.NetworkRoutine
+import com.example.fitlywebcompose.data.network.model.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -41,6 +38,6 @@ interface ApiRoutineService {
     suspend fun removeFavourite(@Path("routineId") routineId: Int) : Response<Unit>
 
     @POST("reviews/{routineId}")
-    suspend fun addScore(@Path("routineId") routineId: Int, @Body score: Int, @Body review: String) : Response<Unit>
+    suspend fun addScore(@Path("routineId") routineId: Int, @Body reviewContent: NetworkReviewContent) : Response<Unit>
 
 }
