@@ -52,6 +52,7 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxSize()
+                .background(MaterialTheme.colors.surface),
         ) {
             Box(
                 modifier = Modifier
@@ -71,11 +72,13 @@ fun LoginScreen(
             Icon(
                 imageVector = Icons.Default.AccountCircle,
                 contentDescription = "accountCircle",
-                modifier = Modifier.size(50.dp)
+                modifier = Modifier.size(50.dp),
+                tint= MaterialTheme.colors.onSurface
             )
             Text(
                 text = stringResource(R.string.sign_in),
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                color = MaterialTheme.colors.onSurface
             )
 
 
@@ -94,6 +97,7 @@ fun LoginScreen(
                     )
                 },
                 singleLine = true,
+                colors= TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colors.onSurface)
             )
             OutlinedTextField(
                 value = password,
@@ -111,6 +115,7 @@ fun LoginScreen(
                 },
                 singleLine = true,
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                colors= TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colors.onSurface),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
                     val image = if (passwordVisible)
@@ -131,7 +136,6 @@ fun LoginScreen(
                 CircularIndeterminateProgressBar(isDisplayed = viewModel.uiState.isFetching)
                 isError = false
             } else {
-                Log.v(null,"refresh")
                 if (viewModel.uiState.isAuthenticated && newTry) {
                     newTry = false
                     onNavigateToRoutineScreen()

@@ -1,5 +1,6 @@
 package com.example.fitlywebcompose.detail
 
+import android.content.Intent
 import androidx.compose.animation.core.animateFloatAsState
 import com.example.fitlywebcompose.ui.theme.Shapes
 import androidx.compose.foundation.background
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +28,7 @@ import com.example.fitlywebcompose.data.getViewModelFactory
 import com.example.fitlywebcompose.routines.RoutineScreenViewModel
 import com.example.fitlywebcompose.detail.mvi.DetailViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fitlywebcompose.BuildConfig
 import com.example.fitlywebcompose.R
 import com.example.fitlywebcompose.routines.FavoriteButton
 
@@ -35,6 +38,7 @@ fun DetailScreen(
     id:Int,
     onNavigateToRoutineScreen: () -> Unit = {},
     onNavigateToExecuteScreen: (id:Int) -> Unit ={},
+    uri: String,
     viewModel: DetailViewModel = viewModel(factory = getViewModelFactory())
     )
     {
@@ -64,9 +68,8 @@ fun DetailScreen(
                 },
                 actions = {
 //                    uiState.routine?.isFavourite?.let { FavoriteButton(routineViewModel, id, it) }
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(imageVector = Icons.Filled.Share, contentDescription = "share")
-                    }
+
+                    ShareRoutineButton(routineId = id, uri= uri)
                 }
 
             )
@@ -261,6 +264,20 @@ fun DetailScreen(
         }
     }
         }
+
+@Composable
+fun ShareRoutineButton(routineId: Int,uri: String) {
+    val context = LocalContext.current
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, "${uri}/routines?id={$routineId}")
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+    IconButton(onClick = { context.startActivity(shareIntent) }){
+        Icon(imageVector = Icons.Default.Share, contentDescription = "share")
+    }
+}
 
 
 

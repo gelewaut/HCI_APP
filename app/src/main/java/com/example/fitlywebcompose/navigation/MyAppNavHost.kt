@@ -1,9 +1,11 @@
 package com.example.fitlywebcompose.navigation
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -53,13 +55,16 @@ fun MyAppNavHost (
         composable(
             "routines/{id}",
             arguments = listOf(navArgument("id") { type = NavType.IntType }),
-            deepLinks = listOf(navDeepLink { uriPattern = "$uri/routines?id={id}" },
-                navDeepLink { uriPattern = "$secureUri/routines?id={id}" })
+            deepLinks = listOf(navDeepLink { uriPattern = "$uri/routines?id={id}"
+                                           action = Intent.ACTION_VIEW},
+                navDeepLink { uriPattern = "$secureUri/routines?id={id}"
+                    action = Intent.ACTION_VIEW})
         ) {
             DetailScreen(
                 it.arguments!!.getInt("id"),
                 onNavigateToRoutineScreen = {navController.navigate("routines")},
-                onNavigateToExecuteScreen = {id -> navController.navigate("routines/$id/execute")}
+                onNavigateToExecuteScreen = {id -> navController.navigate("routines/$id/execute")},
+                uri = uri
 
             )
         }

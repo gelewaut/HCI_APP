@@ -130,7 +130,20 @@ fun RoutineScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-            title = { Text(text = stringResource(R.string.app_name))},
+            title = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = stringResource(R.string.app_name),
+                        textAlign = TextAlign.Center,
+                        fontSize = 25.sp
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Icon(
+                        imageVector = Icons.Default.FitnessCenter,
+                        contentDescription = "fitness_center"
+                    )
+                }
+            },
 
             actions={
                 IconButton(onClick = { showMenu = !showMenu }) {
