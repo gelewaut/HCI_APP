@@ -1,5 +1,6 @@
 package com.example.fitlywebcompose.execution
 
+import android.telecom.Call.Details
 import com.example.fitlywebcompose.data.model.Cycle
 import com.example.fitlywebcompose.data.model.CycleExercise
 import com.example.fitlywebcompose.data.model.Routine
@@ -19,6 +20,8 @@ data class ExecuteUiState (
     val cycle: Cycle? = null,
     val cycleExercise: CycleExercise? = null,
     val finished: Boolean = false,
+
+    val showDetails: Boolean = false,
 )
 
 //val RoutineUiState.canGetCurrentUser: Boolean get() = isAuthenticated

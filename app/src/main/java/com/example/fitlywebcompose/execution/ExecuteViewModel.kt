@@ -94,6 +94,12 @@ class ExecuteViewModel(
         }
     }
 
+    fun toggleDetails(showDetails: Boolean) {
+        uiState = uiState.copy(
+            showDetails = showDetails
+        )
+    }
+
     fun execute () = viewModelScope.launch {
         if (uiState.ok && uiState.exerciseIterator!!.hasNext()) {
             uiState = uiState.copy(
