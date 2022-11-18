@@ -9,7 +9,21 @@
     <string name="sign_in">Inicie sesión</string>
     <string name="arrow_back">Atrás</string>
     <string name="detail_description">Aqui encontraras mas informacion sobre esta rutina, para ver los ejercicios, repeticions o duracion de un ciclo presione el boton de flecha.</string>
-    <string name="score"> Puntuación:</string>
-    <string name="difficulty"> Dificultad: </string>
+    <string name="score"> Puntuación</string>
+    <string name="difficulty"> Dificultad </string>
     <string name="routine_detail">Detalle: </string>
+    <string name="repetitions"> Repeticiones: </string>
+    <string name="duration"> Duración (segundos): </string>
+    <string name="execute"> Ejecutar rutina </string>
+    <string name="favorites"> Favoritos</string>
+    <string name="share"> Compartir </string>
+    <string name="logout"> Cerrar sesión </string>
+    <string name="cycles"> Ciclos: </string>
+    <string name="rookie"> Dificultad Muy Fácil</string>
+    <string name="intermediate"> Dificultad Intermedia</string>
+    <string name="beginner"> Dificultad principiante</string>
+    <string name="advanced"> Dificultad Avanzado</string>
+    <string name="expert"> Dificultad Experto</string>
+    <string name="none"> Ninguno </string>
+    <string name="filters"> Filtrar por </string>
 </resources>

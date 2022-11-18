@@ -26,11 +26,12 @@ class RoutineScreenViewModel(
             message = null
         )
         runCatching {
-            routineRepository.getRoutines()
+            routineRepository.getRoutines(false)
         }.onSuccess { response ->
             uiState = uiState.copy(
                 isFetching = false,
-                routines = response
+                routines = response,
+                showRoutines = response
             )
             Log.v(null, "Ok")
         }.onFailure { e ->
@@ -106,5 +107,23 @@ class RoutineScreenViewModel(
             )
             Log.v(null, "Not Ok Score ${e.message}")
         }
+    }
+
+        fun getFavoriteRoutines(){
+            uiState = uiState.copy(
+                showRoutines = uiState.routines!!.filter { routine-> routine.isFavourite }
+            )
+    }
+
+    fun getRoutinesByScore(){
+        uiState = uiState.copy(
+            showRoutines = uiState.routines!!.sortedBy { routine -> routine.score }
+        )
+    }
+
+    fun getRoutinesByDifficulty(difficulty: String){
+        uiState = uiState.copy(
+            showRoutines = uiState.routines!!.filter { routine -> routine.difficulty.compareTo(difficulty) == 0 }
+        )
     }
 }

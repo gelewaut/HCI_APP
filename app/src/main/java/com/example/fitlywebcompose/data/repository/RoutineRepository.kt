@@ -35,8 +35,8 @@ class RoutineRepository(
     }
 
     suspend fun getRoutine(routineId: Int) : Routine? {
-//        var result = remoteDataSource.getRoutine(routineId).asModel()
-        var result = routines.find {routine -> routine.id == routineId }
+        var result = remoteDataSource.getRoutine(routineId).asModel()
+//        var result = routines.find {routine -> routine.id == routineId }
         result?.cycles = getCycles(routineId)
         return result
 //        return this.routines.find { routine -> routine.id == routineId }

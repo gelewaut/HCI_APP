@@ -1,5 +1,6 @@
 package com.example.fitlywebcompose.login
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -25,6 +26,8 @@ import com.example.fitlywebcompose.data.getViewModelFactory
 import com.example.fitlywebcompose.login.mvi.LoginViewModel
 import com.example.fitlywebcompose.ui.theme.Typography
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.delay
 
 @Preview
 @Composable
@@ -33,12 +36,18 @@ fun LoginScreen(
     viewModel: LoginViewModel= viewModel(factory= getViewModelFactory())
 ) {
 
-        var user by rememberSaveable{ mutableStateOf("") }
-        var password by rememberSaveable{ mutableStateOf("") }
-        var passwordVisible by rememberSaveable { mutableStateOf(false) }
-        var isError = false
 
-        Column (
+        var user by rememberSaveable { mutableStateOf("") }
+        var password by rememberSaveable { mutableStateOf("") }
+        var passwordVisible by rememberSaveable { mutableStateOf(false) }
+        var isError by rememberSaveable {
+            mutableStateOf(false)
+        }
+        var newTry by remember {
+            mutableStateOf(false)
+        }
+
+        Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
@@ -50,7 +59,7 @@ fun LoginScreen(
                     .padding(4.dp)
                     .width(300.dp),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 Row() {
                     Text(
                         text = stringResource(R.string.app_name),
@@ -62,36 +71,44 @@ fun LoginScreen(
             Icon(
                 imageVector = Icons.Default.AccountCircle,
                 contentDescription = "accountCircle",
-                modifier= Modifier.size(50.dp)
-                )
-                Text(
-                    text = stringResource(R.string.sign_in),
-                    fontSize = 20.sp
-                    )
+                modifier = Modifier.size(50.dp)
+            )
+            Text(
+                text = stringResource(R.string.sign_in),
+                fontSize = 20.sp
+            )
 
-            
+
             OutlinedTextField(
                 value = user,
-                onValueChange = {user = it},
+                onValueChange = { user = it },
                 modifier = Modifier
                     .background(MaterialTheme.colors.surface)
                     .padding(4.dp)
                     .width(300.dp),
                 label = { Text(text = stringResource(R.string.username)) },
-//                placeholder = { Text(text = stringResource(R.string.insert_username))},
-                leadingIcon = { Icon(imageVector = Icons.Default.AccountBox, contentDescription = "accountBox") },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.AccountBox,
+                        contentDescription = "accountBox"
+                    )
+                },
                 singleLine = true,
             )
             OutlinedTextField(
                 value = password,
-                onValueChange = {password = it},
+                onValueChange = { password = it },
                 modifier = Modifier
                     .background(MaterialTheme.colors.surface)
                     .padding(4.dp)
                     .width(300.dp),
-                label = { Text(text =  stringResource(R.string.password))},
-//                placeholder = { Text(text = stringResource(R.string.insert_password) )},
-                leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "lock") },
+                label = { Text(text = stringResource(R.string.password)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Lock,
+                        contentDescription = "lock"
+                    )
+                },
                 singleLine = true,
                 visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -103,50 +120,64 @@ fun LoginScreen(
                     // Please provide localized description for accessibility services
                     val description = if (passwordVisible) "Hide password" else "Show password"
 
-                    IconButton(onClick = {passwordVisible = !passwordVisible}){
-                        Icon(imageVector  = image, description)
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(imageVector = image, description)
                     }
                 }
             )
-            
 
-                            
+
+            if (viewModel.uiState.isFetching) {
+                CircularIndeterminateProgressBar(isDisplayed = viewModel.uiState.isFetching)
+                isError = false
+            } else {
+                Log.v(null,"refresh")
+                if (viewModel.uiState.isAuthenticated && newTry) {
+                    newTry = false
+                    onNavigateToRoutineScreen()
+                } else if (newTry) {
+                    isError = true
+                    newTry = false
+                }
                 Button(
                     onClick = {
                         viewModel.doLogin(user, password)
-                        if(viewModel.uiState.isAuthenticated){
-                            onNavigateToRoutineScreen()
-                        }else{
-                            isError = true
-                        }
+                        newTry = true
                     },
                     enabled = user.isNotEmpty() && password.isNotEmpty(),
-                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)) {
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
+                ) {
                     Text(
                         text = stringResource(R.string.LoginButton),
                         fontSize = Typography.body1.fontSize,
                         color = MaterialTheme.colors.onPrimary
                     )
-
                 }
+            }
 
-
-            if (isError){
+            if (isError) {
                 Snackbar(
                     backgroundColor = MaterialTheme.colors.error,
                     modifier = Modifier.width(300.dp)
                 ) {
-                    Text(
-                        text = viewModel.uiState.error.toString(),
-                        color = MaterialTheme.colors.onError
-                    )
-                    Button(onClick = {
-                        isError = false
-                    }){
-                        Icon(imageVector = Icons.Rounded.Close , contentDescription = "close")
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = viewModel.uiState.error.toString(),
+                            color = MaterialTheme.colors.onError,
+                            modifier = Modifier.weight(3f)
+                        )
+                        TextButton(
+                            onClick = {
+                                isError = false
+                            },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(text = "CLOSE")
+                        }
                     }
                 }
             }
 
         }
     }
+

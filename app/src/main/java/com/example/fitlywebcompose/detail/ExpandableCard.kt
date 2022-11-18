@@ -19,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.rotationMatrix
+import com.example.fitlywebcompose.R
 import com.example.fitlywebcompose.data.model.Cycle
 import com.example.fitlywebcompose.ui.theme.Shapes
 
@@ -41,6 +43,7 @@ fun ExpandableCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(4.dp)
             .animateContentSize(
                 animationSpec = tween(
                     durationMillis = 300,
@@ -48,6 +51,7 @@ fun ExpandableCard(
                 )
             ),
         shape = Shapes.medium,
+        backgroundColor = MaterialTheme.colors.secondary,
         onClick = {
             expandedState = !expandedState
         }
@@ -56,11 +60,9 @@ fun ExpandableCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp)
-                .background(MaterialTheme.colors.secondary)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.background(MaterialTheme.colors.secondary)
             ){
                Text(
                    modifier = Modifier
@@ -86,7 +88,13 @@ fun ExpandableCard(
             if(expandedState){
                 cycle.exercises.forEach{
                     cycleExercise ->
-                    Text(text = "${cycleExercise.exercise.name} | ${cycleExercise.duration} |${cycleExercise.repetitions}")
+                    Text(text = "${cycleExercise.exercise.name}", fontWeight = FontWeight.Bold)
+                    Row {
+                        Text(text= stringResource(R.string.duration))
+                        Text(text = " ${cycleExercise.duration} | ")
+                        Text(text = stringResource(R.string.repetitions))
+                        Text(text = " ${cycleExercise.repetitions} ")
+                    }
                 }
 
             }
