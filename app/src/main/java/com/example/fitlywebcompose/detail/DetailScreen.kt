@@ -100,7 +100,7 @@ fun DetailScreen(
                     modifier = Modifier
                         .padding(6.dp)
                 ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column() {
                         Row {
                             Text(
                                 text = stringResource(R.string.routine_detail),

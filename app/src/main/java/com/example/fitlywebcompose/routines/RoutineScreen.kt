@@ -42,63 +42,60 @@ fun RoutineListItem(
 
     Card(
         shape = RoundedCornerShape(15.dp),
-        elevation = 10.dp,
+        elevation = 30.dp,
         onClick = { onNavigateToDetailScreen(routine.id) },
-        modifier= Modifier.padding(6.dp)
+        modifier= Modifier.padding(6.dp),
+        backgroundColor = MaterialTheme.colors.secondary
     ) {
-        Box(
-            modifier = Modifier
-                .height(200.dp)
-                .fillMaxWidth()
-                .background(color = MaterialTheme.colors.secondary)
-                .padding(20.dp),
-            contentAlignment = Alignment.CenterStart,
 
-            ) {
 
-            Row {
-                Card(
-                    //modifier = modifier.clickable { onClick() },
-                    shape = RoundedCornerShape(15.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .height(100.dp)
-                            .width(150.dp)
-                            .background(color = Color.Gray)
-                    ) {/*foto del ejercicio*/ }
-                }
-                Column() {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
-                    Box(
-                        modifier = Modifier
-                            .width(150.dp),
-                        contentAlignment = Alignment.TopCenter
-                    ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = routine.name,
+                            fontSize = 25.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
+                        )
+                        FavoriteButton(viewModel, routine.id, routine.isFavourite)
+                    }
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = stringResource(id = R.string.difficulty),
                             fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = ": ${routine.difficulty}",
+                            fontSize = 18.sp,
+                            textAlign = TextAlign.Center
                         )
                     }
-                    Box(
-                        modifier = Modifier
-                            .width(150.dp)
-                            .height(80.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = stringResource(id = R.string.score),
+                            fontSize = 18.sp,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = ": ${routine.score}",
+                            fontSize = 18.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
                         Button(
-                            onClick = {onNavigateToExecuteScreen(routine.id)},
+                            onClick = { onNavigateToExecuteScreen(routine.id) }
                         ) {
                             Text(
                                 text = stringResource(R.string.execute),
                                 textAlign = TextAlign.Center
                             )
-                        }
                     }
-                }
-                FavoriteButton(viewModel,routine.id, routine.isFavourite)
-            }
+
         }
     }
 }
@@ -223,7 +220,7 @@ fun RoutineScreen(
                 }
             }
             LazyVerticalGrid(
-                columns=  GridCells.Adaptive(300.dp),
+                columns=  GridCells.Adaptive(200.dp),
                 content = {
                 viewModel.uiState.showRoutines?.forEach {
                     item {
