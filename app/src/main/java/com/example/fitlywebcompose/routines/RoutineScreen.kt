@@ -56,21 +56,25 @@ fun RoutineListItem(
                             text = routine.name,
                             fontSize = 25.sp,
                             fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.weight(6f)
                         )
-                        FavoriteButton(viewModel, routine.id, routine.isFavourite)
+                        Box(
+                            modifier = Modifier.weight(1f)) {
+                            FavoriteButton(viewModel, routine.id, routine.isFavourite)
+                        }
                     }
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = stringResource(id = R.string.difficulty),
                             fontSize = 18.sp,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Left
                         )
                         Text(
                             text = ": ${routine.difficulty}",
                             fontSize = 18.sp,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Left
                         )
                     }
 
@@ -78,12 +82,12 @@ fun RoutineListItem(
                         Text(
                             text = stringResource(id = R.string.score),
                             fontSize = 18.sp,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Left
                         )
                         Text(
                             text = ": ${routine.score}",
                             fontSize = 18.sp,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Left
                         )
                     }
 
