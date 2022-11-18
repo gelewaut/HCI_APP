@@ -8,6 +8,7 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.example.fitlywebcompose.data.repository.RoutineRepository
 import com.example.fitlywebcompose.data.repository.UserRepository
 import com.example.fitlywebcompose.detail.mvi.DetailViewModel
+import com.example.fitlywebcompose.execution.ExecuteViewModel
 import com.example.fitlywebcompose.login.mvi.LoginViewModel
 import com.example.fitlywebcompose.routines.RoutineScreenViewModel
 
@@ -31,6 +32,8 @@ class ViewModelFactory constructor(
                 DetailViewModel(sessionManager, routineRepository)
             isAssignableFrom(RoutineScreenViewModel::class.java) ->
                 RoutineScreenViewModel(sessionManager, userRepository, routineRepository)
+            isAssignableFrom(ExecuteViewModel::class.java) ->
+                ExecuteViewModel(sessionManager, routineRepository)
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

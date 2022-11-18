@@ -1,9 +1,14 @@
 package com.example.fitlywebcompose.execution
 
+import android.os.CountDownTimer
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -17,143 +22,171 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fitlywebcompose.R
+import com.example.fitlywebcompose.data.getViewModelFactory
+import com.example.fitlywebcompose.routines.RoutineScreenViewModel
 import com.example.fitlywebcompose.ui.theme.Typography
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.fitlywebcompose.data.model.Cycle
+import com.example.fitlywebcompose.data.model.CycleExercise
 import org.intellij.lang.annotations.JdkConstants
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import kotlin.math.absoluteValue
 
 @Composable
-fun textCard(Text: String) {
-    Card() {
-        Box(
-            modifier = Modifier
-                .width(250.dp)
-                .height(100.dp)
-                .background(color = MaterialTheme.colors.primary),
-            contentAlignment = Center,
-        ) {
-            Text(
-                text = Text,
-                color = Color.White,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
+fun ExecuteScreen(
+    id:Int,
+    onNavigateToDetailScreen: (id:Int) -> Unit,
+    viewModel: ExecuteViewModel = viewModel(factory = getViewModelFactory())
+) {
+    val uiState = viewModel.uiState
+    if(uiState.currentRoutine == null || viewModel.uiState.currentRoutine!!.id != id) {
+        viewModel.fetchRoutine(id)
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RoutineDisplay() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-    ) {
-        Column(
-            modifier = Modifier
-                .align(TopCenter)
-                .padding(top = 100.dp),
-            verticalArrangement = Arrangement.spacedBy(40.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            textCard(Text = "EJECUTANDO: NOMBRE DE RUTINA")
-            Text(
-                text = "TIEMPO RESTANTE DE EJERCICIO",
-                textAlign = TextAlign.Center,
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            Text(
-                text = "02:30",
-                textAlign = TextAlign.Center,
-                fontSize = 25.sp,
-                fontWeight = FontWeight.Bold
-            )
-
-            textCard(Text = "ciclo 1")
-            textCard(Text = "Nombre ej")
-
-        }
-
-    }
-}
-
-@Composable
-fun ExecuteScreen(id:Int, onNavigateToDetailScreen: (id:Int) -> Unit ) {
+    val cou = 0
+    var exercise: CycleExercise? = uiState.cycleExercise
+    val count = remember { mutableStateOf(0) }
     Surface() {
-        Column (
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Text(text = "Executing Routine $id")
-            Button(onClick = { onNavigateToDetailScreen(id) }) {
-                Text(
-                    text = "Go Back",
-                    fontSize = Typography.body1.fontSize
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = uiState.currentRoutine?.name.toString(),
+                            textAlign = TextAlign.Center
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(
+                            onClick = { onNavigateToDetailScreen(id) },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "arrowBack",
+                                tint = MaterialTheme.colors.onPrimary
+                            )
+                        }
+                    },
+                    actions = {
+                        ShowDetailsButton(
+                            toggleDetails = {viewModel.toggleDetails(!uiState.showDetails)}
+                        )
+                    }
                 )
+            },
+        ){
+            Column (
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it)
+            ) {
+                Button(
+                    onClick = { viewModel.prepareTimer() },
+                    enabled = uiState.currentRoutine!=null
+                ) {
+                    Text(text = "Prepare Timer")
+                }
+                Button(
+                    onClick = { viewModel.execute() },
+                    enabled = uiState.ok
+                ) {
+                    Text(text = "Start")
+                }
+//            exercise?.let { ShowExercise(cycleExercise = it) }
+                exercise?.let {
+                    val timer = remember {
+                        object : CountDownTimer((exercise.duration * 1000).toLong(), 1000) {
+                            override fun onTick(p0: Long) {
+                                Log.v(null, "${(p0 / 1000).toInt()}")
+                                count.value = (p0 / 1000).toInt()
+                            }
+
+                            override fun onFinish() {
+                                viewModel.execute()
+                                Log.v(null, "Finished ${exercise.exercise.name}")
+                                this.cancel()
+                                if (uiState.cycleExercise != null)
+                                    this.start()
+                            }
+                        }.start()
+                    }
+                    if (uiState.showDetails) {
+                        DetailedRoutineDisplay(
+                            uiState.currentRoutine!!,
+                            uiState.cycle!!,
+                            uiState.cycleExercise!!,
+                            count.value
+                        )
+                    }
+                    else {
+                        RoutineDisplay(
+                            uiState.currentRoutine!!,
+                            uiState.cycle!!,
+                            uiState.cycleExercise!!,
+                            count.value
+                        )
+                    }
+                }
             }
+            uiState.message?.let { Text(text = uiState.message) }
+        }
+        }
+
+    }
+
+
+@Composable
+fun ShowDetailsButton(toggleDetails: ()->Unit) {
+    Button(onClick = toggleDetails) {
+        Card(
+            modifier = Modifier
+                .width(205.dp)
+                .height(50.dp),
+            backgroundColor = MaterialTheme.colors.primary
+
+        ) {
+            Text(
+                text = "Cambiar Vista",
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold
+            )
+
         }
     }
 }
 
 /*
-
-import android.os.CountDownTimer
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
-
 @Composable
-fun ExecuteScreen(id:Int, onNavigateToDetailScreen: (id:Int) -> Unit) {
-    var count by remember { mutableStateOf(10) }
-    var time = Timer(count = count, onCountChange = {count = it})
-    Surface() {
-        Column (
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Text (text = "$count")
-            Button(onClick = { time }) {
-                Text(text = "Start")
-            }
-            Text(text = "Executing Routine $id")
-            Button(onClick = { onNavigateToDetailScreen(id) }) {
-                Text(
-                    text = "Go Back",
-                    fontSize = Typography.body1.fontSize,
-                    color = MaterialTheme.colors.primary
-                )
-            }
-        }
-    }
+fun ShowText(count:Int) {
+    Text(text = "$count")
 }
+
 @Composable
-fun Timer (count:Int, onCountChange: (Int) -> Unit) {
-    val time = object : CountDownTimer((count * 1000).toLong(), 1000) {
+fun ShowExercise (
+    cycleExercise: CycleExercise
+) {
+    Text(text = cycleExercise.exercise.name?: "")
+    Text(text = cycleExercise.duration.toString())
+}
+
+@Composable
+fun ExecuteExercise (
+    exercise: CycleExercise,
+    nextExercise: ()-> Unit,
+    tick: (Int) -> Unit
+) {
+    object : CountDownTimer((exercise.duration * 1000).toLong(), 1000) {
         override fun onTick(p0: Long) {
-            onCountChange ((p0/1000).toInt())
+            Log.v(null,"${(p0/1000).toInt()}")
+            tick((p0/1000).toInt())
         }
 
         override fun onFinish() {
-            onCountChange (10)
+            nextExercise()
+            Log.v(null, "Finished ${exercise.exercise.name}")
             this.cancel()
         }
-
     }.start()
 }
-
-
-
-@Preview (showBackground = true)
-@Composable
-fun ShowScreen() {
-    ExecuteScreen(id = 1, onNavigateToDetailScreen = {})
-}
-*/
+* */

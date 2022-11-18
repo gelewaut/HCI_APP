@@ -14,6 +14,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.fitlywebcompose.data.model.Cycle
+import com.example.fitlywebcompose.data.model.CycleExercise
+import com.example.fitlywebcompose.data.model.Routine
 
 @Composable
 fun titleCard(Text: String) {
@@ -35,9 +38,8 @@ fun titleCard(Text: String) {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun DetailedRoutineDisplay(/*routine: Routine, cycle: Cycle, ex: CycleExercise*/) {
+fun DetailedRoutineDisplay(routine: Routine, cycle: Cycle, ex: CycleExercise, time: Int) {
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -48,7 +50,7 @@ fun DetailedRoutineDisplay(/*routine: Routine, cycle: Cycle, ex: CycleExercise*/
                 .padding(start = 25.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
-            titleCard(Text = "Rutina: " /*+ routine.name*/)
+            titleCard(Text = "Rutina: " + routine.name)
             Column(verticalArrangement = Arrangement.spacedBy(5.dp))
             {
                 Box(
@@ -56,21 +58,21 @@ fun DetailedRoutineDisplay(/*routine: Routine, cycle: Cycle, ex: CycleExercise*/
                         .width(300.dp)
                 ) {
                     Text(
-                        text = "Detalle: "/* + routine.detail*/,
+                        text = "Detalle: " + routine.detail,
                         fontSize = 17.sp
                     )
                 }
                 Text(
-                    text = "Dificultad: " /*+ routine.difficulty*/,
+                    text = "Dificultad: " + routine.difficulty,
                     fontSize = 17.sp
                 )
                 Text(
-                    text = "Puntuacion: "/* + routine.score*/,
+                    text = "Puntuacion: " + routine.score,
                     fontSize = 17.sp
                 )
 
             }
-            titleCard(Text = "Ciclo: " /*+ cycle.name*/)
+            titleCard(Text = "Ciclo: " + cycle.name)
             Column(verticalArrangement = Arrangement.spacedBy(5.dp))
             {
                 Box(
@@ -78,21 +80,21 @@ fun DetailedRoutineDisplay(/*routine: Routine, cycle: Cycle, ex: CycleExercise*/
                         .width(300.dp)
                 ) {
                     Text(
-                        text = "Detalle: "/* + cycle.detail*/,
+                        text = "Detalle: " + cycle.detail,
                         fontSize = 17.sp
                     )
                 }
                 Text(
-                    text = "Tipo: " /*+ cycle.type*/,
+                    text = "Tipo: " + cycle.type,
                     fontSize = 17.sp
                 )
                 Text(
-                    text = "Repeticiones: " /*+ cycle.repetitions*/,
+                    text = "Repeticiones: " + cycle.repetitions,
                     fontSize = 17.sp
                 )
 
             }
-            titleCard(Text = "Ejercicio: " /*+ ex.exercise.name*/)
+            titleCard(Text = "Ejercicio: " + ex.exercise.name)
             Column(verticalArrangement = Arrangement.spacedBy(5.dp))
             {
                 Box(
@@ -100,20 +102,20 @@ fun DetailedRoutineDisplay(/*routine: Routine, cycle: Cycle, ex: CycleExercise*/
                         .width(300.dp)
                 ) {
                     Text(
-                        text = "Detalle: " /*+ ex.exercise.detail*/,
+                        text = "Detalle: " + ex.exercise.detail,
                         fontSize = 17.sp
                     )
                 }
                 Text(
-                    text = "Tipo: " /*+ ex.exercise.type*/,
+                    text = "Tipo: " + ex.exercise.type,
                     fontSize = 17.sp
                 )
                 Text(
-                    text = "Repeticiones: " /*+ ex.repetitions*/,
+                    text = "Repeticiones: " + ex.repetitions,
                     fontSize = 17.sp
                 )
                 Text(
-                    text = "Duracion: " /*+ ex.duration*/,
+                    text = "Duracion: " + ex.duration,
                     fontSize = 17.sp
                 )
                 Box(
@@ -134,7 +136,7 @@ fun DetailedRoutineDisplay(/*routine: Routine, cycle: Cycle, ex: CycleExercise*/
                                 .padding(start = 70.dp)
                         ) {
                             Text(
-                                text = "00:45",
+                                text = "$time",
                                 fontSize = 50.sp,
                                 fontWeight = FontWeight.Bold
                             )
