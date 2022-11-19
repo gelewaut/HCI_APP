@@ -41,7 +41,14 @@ fun titleCard(Text: String) {
 }
 
 @Composable
-fun DetailedRoutineDisplay(routine: Routine, cycle: Cycle, ex: CycleExercise, time: Int) {
+fun DetailedRoutineDisplay(
+    routine: Routine,
+    cycle: Cycle,
+    ex: CycleExercise,
+    time: Int,
+    cycleRepetitions: Int,
+    exerciseRepetitions: Int
+) {
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -70,6 +77,61 @@ fun DetailedRoutineDisplay(routine: Routine, cycle: Cycle, ex: CycleExercise, ti
                     )
                 }
             }
+            titleCard(Text = stringResource(R.string.exercise) + ex.exercise.name)
+            Column(verticalArrangement = Arrangement.spacedBy(5.dp))
+            {
+                Box(
+                    modifier = Modifier
+                        .width(300.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.routine_detail) + ex.exercise.detail,
+                        fontSize = 17.sp
+                    )
+                }
+                Text(
+                    text = stringResource(R.string.type) + ex.exercise.type,
+                    fontSize = 17.sp
+                )
+                Text(
+                    text = stringResource(R.string.repetitions) + exerciseRepetitions,
+                    fontSize = 17.sp
+                )
+                Text(
+                    text = stringResource(R.string.duration) + ex.duration,
+                    fontSize = 17.sp
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 30.dp)
+                        .padding(start = 40.dp),
+                ) {
+                }
+            }
+            titleCard(Text = stringResource(R.string.routine_cycle) + cycle.name)
+            Column(verticalArrangement = Arrangement.spacedBy(5.dp))
+            {
+                Box(
+                    modifier = Modifier
+                        .width(300.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.routine_detail) + cycle.detail,
+                        fontSize = 17.sp
+                    )
+                }
+                Text(
+                    text = stringResource(R.string.type) + cycle.type,
+                    fontSize = 17.sp
+                )
+                Text(
+                    text = stringResource(R.string.repetitions) + cycleRepetitions,
+                    fontSize = 17.sp
+                )
+
+            }
+
             titleCard(Text = stringResource(R.string.routine_name) + routine.name)
             Column(verticalArrangement = Arrangement.spacedBy(5.dp))
             {
@@ -91,60 +153,6 @@ fun DetailedRoutineDisplay(routine: Routine, cycle: Cycle, ex: CycleExercise, ti
                     fontSize = 17.sp
                 )
 
-            }
-            titleCard(Text = stringResource(R.string.routine_cycle) + cycle.name)
-            Column(verticalArrangement = Arrangement.spacedBy(5.dp))
-            {
-                Box(
-                    modifier = Modifier
-                        .width(300.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.routine_detail) + cycle.detail,
-                        fontSize = 17.sp
-                    )
-                }
-                Text(
-                    text = stringResource(R.string.type) + cycle.type,
-                    fontSize = 17.sp
-                )
-                Text(
-                    text = stringResource(R.string.repetitions) + cycle.repetitions,
-                    fontSize = 17.sp
-                )
-
-            }
-            titleCard(Text = stringResource(R.string.exercise) + ex.exercise.name)
-            Column(verticalArrangement = Arrangement.spacedBy(5.dp))
-            {
-                Box(
-                    modifier = Modifier
-                        .width(300.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.routine_detail) + ex.exercise.detail,
-                        fontSize = 17.sp
-                    )
-                }
-                Text(
-                    text = stringResource(R.string.type) + ex.exercise.type,
-                    fontSize = 17.sp
-                )
-                Text(
-                    text = stringResource(R.string.repetitions) + ex.repetitions,
-                    fontSize = 17.sp
-                )
-                Text(
-                    text = stringResource(R.string.duration) + ex.duration,
-                    fontSize = 17.sp
-                )
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 30.dp)
-                        .padding(start = 40.dp),
-                ) {
-                }
             }
         }
     }

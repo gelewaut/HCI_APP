@@ -61,11 +61,19 @@ fun LoginScreen(
                     .width(300.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Row() {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(
                         text = stringResource(R.string.app_name),
                         color = MaterialTheme.colors.onPrimary,
                         fontSize = 25.sp
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Icon(
+                        imageVector = Icons.Default.FitnessCenter,
+                        contentDescription = "fitness_center",
+                        tint = MaterialTheme.colors.onPrimary
                     )
                 }
             }

@@ -73,27 +73,31 @@ class ExecuteViewModel(
     }
 
     private fun getExerciseIterator() {
-        if (uiState.cycleIterator!!.hasNext()) {
-            Log.v(null, "tiene next")
+        Log.v(null, "${uiState.cycleRepetitions}")
+        if (uiState.cycleRepetitions > 0) {
+            val list = uiState.cycle!!.exercises
+            uiState = uiState.copy(
+                exerciseIterator = list.iterator(),
+                cycleRepetitions = uiState.cycleRepetitions-1,
+                ok = true,
+            )
+            Log.v(null, "Entraaaaaaaaaaaaaaaaaaa")
+        } else if (uiState.cycleIterator!!.hasNext()) {
             val exe = uiState.cycleIterator!!.next()
-            if(exe.exercises.isNotEmpty()) {
-                Log.v(null,"no esta empty")
-                uiState = uiState.copy(
-                    ok = true,
-                    exerciseIterator = exe.exercises.iterator(),
-                    cycle = exe
-                )
-                Log.v(null,"AntiCorte")
-//                uiState.exerciseIterator = exe.exercises.iterator()
-//                uiState.ok = true
-            } else {
-                getExerciseIterator()
-            }
+                if(exe.exercises.isNotEmpty()) {
+                    uiState = uiState.copy(
+                        ok = true,
+                        cycle = exe,
+                        exerciseIterator = exe.exercises.iterator(),
+                        cycleRepetitions = exe.repetitions -1
+                    )
+                } else {
+                    getExerciseIterator()
+                }
         } else {
             uiState = uiState.copy(
                 ok = false
             )
-            Log.v(null,"Iterator 4")
         }
     }
 
@@ -104,6 +108,7 @@ class ExecuteViewModel(
     }
 
     fun execute () = viewModelScope.launch {
+        Log.v(null, "Entrooooooo ${uiState.cycleRepetitions}")
         if (uiState.repetitions_left > 0) {
             uiState = uiState.copy(
                 repetitions_left = uiState.repetitions_left-1
@@ -115,25 +120,27 @@ class ExecuteViewModel(
             val exe = uiState.exerciseIterator!!.next()
             uiState = uiState.copy(
                 cycleExercise = exe,
-                repetitions_left = exe.repetitions+1
+                repetitions_left = exe.repetitions
             )
-            Log.v(null,"Iterator 1")
             return@launch
         } else {
             uiState = uiState.copy(
                 ok = false
             )
         }
-        while (uiState.ok && uiState.cycleIterator!!.hasNext()) {
-            Log.v(null,"Iterator 3")
+        while (!uiState.ok && (uiState.cycleIterator!!.hasNext() || uiState.cycleRepetitions > 0)) {
+//            Log.v(null, "Repetitions left: ${uiState.cycleRepetitions}")
             getExerciseIterator()
+//            Log.v(null,"Repetitions left: ${uiState.cycleRepetitions} ok = ${uiState.ok}")
         }
+        Log.v(null, "${uiState.cycleRepetitions}     ${uiState.exerciseIterator!!.hasNext()}")
+
         if(uiState.ok && uiState.exerciseIterator!!.hasNext()) {
+            val exe = uiState.exerciseIterator!!.next()
             uiState = uiState.copy(
-                cycleExercise = uiState.exerciseIterator!!.next(),
-                repetitions_left = uiState.cycleExercise!!.repetitions+1
+                cycleExercise = exe,
+                repetitions_left = exe.repetitions
             )
-            Log.v(null,"Iterator 2")
             return@launch
         }
 

@@ -35,5 +35,7 @@
     <string name="executing"> EXECUTING: </string>
     <string name="change_view"> Change View </string>
     <string name="invert_colors"> Invert colors</string>
+    <string name="repetitions_left"> Repetitions Left: </string>
+    <string name="start"> Start </string>
 
 </resources>

@@ -36,4 +36,6 @@
     <string name="executing"> EJECUTANDO: </string>
     <string name="change_view"> Cambiar Vista </string>
     <string name="invert_colors"> Invertir colores</string>
+    <string name="repetitions_left"> Repeticiones Faltantes: </string>
+    <string name="start"> Comenzar </string>
 </resources>

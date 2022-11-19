@@ -72,13 +72,9 @@ fun ExpandableCard(
                    fontWeight = FontWeight.Bold,
                    color = MaterialTheme.colors.onPrimary
                )
-                Text(text = stringResource(id = R.string.repetitions), modifier = Modifier.weight(3f),                   fontSize = 20.sp,
-                    color = MaterialTheme.colors.onPrimary)
-                Text(
-                    text = "${cycle.repetitions}",modifier = Modifier.weight(1f),
+                Text(text = stringResource(id = R.string.repetitions) +" " + cycle.repetitions,
                     fontSize = 20.sp,
-                    color = MaterialTheme.colors.onPrimary
-                )
+                    color = MaterialTheme.colors.onPrimary)
                 IconButton(
                     modifier = Modifier
                         .alpha(ContentAlpha.medium)

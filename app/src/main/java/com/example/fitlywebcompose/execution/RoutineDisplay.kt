@@ -22,7 +22,14 @@ import com.example.fitlywebcompose.data.model.CycleExercise
 import com.example.fitlywebcompose.data.model.Routine
 
 @Composable
-fun RoutineDisplay(routine: Routine, cycle: Cycle, ex: CycleExercise, time: Int) {
+fun RoutineDisplay(
+    routine: Routine,
+    cycle: Cycle,
+    ex: CycleExercise,
+    time: Int,
+    cycleRepetitions: Int,
+    exerciseRepetitions: Int
+) {
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -31,7 +38,7 @@ fun RoutineDisplay(routine: Routine, cycle: Cycle, ex: CycleExercise, time: Int)
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(top = 25.dp),
-            verticalArrangement = Arrangement.spacedBy(40.dp),
+            verticalArrangement = Arrangement.spacedBy(25.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             textCard(Text = stringResource(R.string.executing) + routine.name)
@@ -49,9 +56,8 @@ fun RoutineDisplay(routine: Routine, cycle: Cycle, ex: CycleExercise, time: Int)
                 fontWeight = FontWeight.Bold
             )
 
-            textCard(Text = cycle.name)
-            textCard(Text = "${ex.exercise.name}")
-
+            textCard(Text = stringResource(R.string.cycles) + cycle.name + "  " + stringResource(R.string.repetitions_left) + cycleRepetitions)
+            textCard(Text = ex.exercise.name + "  " + stringResource(R.string.repetitions_left) + exerciseRepetitions)
         }
 
     }
@@ -62,7 +68,7 @@ fun textCard(Text: String) {
     Card() {
         Box(
             modifier = Modifier
-                .width(250.dp)
+                .fillMaxWidth()
                 .height(100.dp)
                 .background(color = MaterialTheme.colors.primary),
             contentAlignment = Center,
