@@ -28,8 +28,8 @@ fun MyAppNavHost (
     navController: NavHostController = rememberNavController(),
     startDestination: String = Screen.LoginScreen.route
 ) {
-    val uri = "http://www.fitly.com"
-    val secureUri = "https://www.fitly.com"
+    val uri = "http://www.fitly-hci.com"
+    val secureUri = "https://www.fitly-hci.com"
     val loginViewModel:LoginViewModel = viewModel(factory = getViewModelFactory())
     val routineScreenViewModel:RoutineScreenViewModel = viewModel(factory = getViewModelFactory())
 
